@@ -4,6 +4,10 @@ import "./Blog.css";
 import Posts from "../Blog/Posts/Posts";
 import newPost from "../Blog/NewPost/NewPost";
 class Blog extends Component {
+  state = {
+    auth: false
+  };
+
   render() {
     return (
       <div className="Blog">
@@ -32,7 +36,9 @@ class Blog extends Component {
         {/* <Route path="/" exact render={() => <Posts />} />
         <Route path="/new-post" exact render={() => <h1>Home2</h1>} /> */}
         <Switch>
-          <Route path="/new-post" exact component={newPost} />
+          {this.state.auth ? (
+            <Route path="/new-post" exact component={newPost} />
+          ) : null}
           <Route path="/post" component={Posts} />
           <Redirect from="/" to="/post" />
         </Switch>
