@@ -1,9 +1,8 @@
 import React, { Component } from "react";
-import { Route, NavLink } from "react-router-dom";
+import { Route, NavLink, Switch, Redirect } from "react-router-dom";
 import "./Blog.css";
 import Posts from "../Blog/Posts/Posts";
 import newPost from "../Blog/NewPost/NewPost";
-import FullPost from "./FullPost/FullPost";
 class Blog extends Component {
   render() {
     return (
@@ -12,7 +11,7 @@ class Blog extends Component {
           <nav>
             <ul>
               <li>
-                <NavLink to="/" exact>
+                <NavLink to="/post/" exact>
                   Home
                 </NavLink>
               </li>
@@ -32,9 +31,11 @@ class Blog extends Component {
         </header>
         {/* <Route path="/" exact render={() => <Posts />} />
         <Route path="/new-post" exact render={() => <h1>Home2</h1>} /> */}
-        <Route path="/" exact component={Posts} />
-        <Route path="/new-post" exact component={newPost} />
-        <Route path="/:id" exact component={FullPost} />
+        <Switch>
+          <Route path="/new-post" exact component={newPost} />
+          <Route path="/post" component={Posts} />
+          <Redirect from="/" to="/post" />
+        </Switch>
       </div>
     );
   }

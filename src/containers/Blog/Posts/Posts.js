@@ -2,7 +2,9 @@ import React, { Component } from "react";
 import axios from "axios";
 import Post from "../../../components/Post/Post";
 import "./Posts.css";
-import { Link } from "react-router-dom";
+import { Route } from "react-router-dom";
+import FullPost from "../FullPost/FullPost";
+// import { Link } from "react-router-dom";
 class Posts extends Component {
   state = {
     posts: []
@@ -11,7 +13,7 @@ class Posts extends Component {
     axios
       .get("/posts")
       .then(response => {
-        const postsControl = response.data.slice(0, 6);
+        const postsControl = response.data.slice(0, 4);
         const updatePosts = postsControl.map(post => {
           return {
             ...post,
@@ -28,7 +30,8 @@ class Posts extends Component {
   }
 
   selectPost = id => {
-    this.setState({ selectedPost: id });
+    // this.props.history.push({ pathname: "/post/" + id });
+    this.props.history.push("/post/" + id);
   };
 
   render() {
@@ -40,17 +43,27 @@ class Posts extends Component {
     if (!this.state.error) {
       posts = this.state.posts.map(post => {
         return (
-          <Link to={"/" + post.id} key={post.id}>
-            <Post
-              title={post.title}
-              author={post.author}
-              clicked={() => this.selectPost(post.id)}
-            />
-          </Link>
+          //<Link to={"/" + post.id} key={post.id}>
+          <Post
+            key={post.id}
+            title={post.title}
+            author={post.author}
+            clicked={() => this.selectPost(post.id)}
+          />
+          //</Link>
         );
       });
     }
-    return <section className="Posts">{posts}</section>;
+    return (
+      <div>
+        <section className="Posts">{posts}</section>
+        <Route
+          path={this.props.match.url + "/:id"}
+          exact
+          component={FullPost}
+        />
+      </div>
+    );
   }
 }
 
